@@ -1,0 +1,50 @@
+# Block access to sensitive locations outside this project
+
+# Cloud storage
+/c/Users/Razer/OneDrive/**
+
+# Personal folders
+/c/Users/Razer/Documents/**
+/c/Users/Razer/Desktop/**
+/c/Users/Razer/Pictures/**
+/c/Users/Razer/Videos/**
+/c/Users/Razer/Music/**
+/c/Users/Razer/Downloads/**
+
+# Brave browser (passwords, cookies, history, payment methods, autofill)
+/c/Users/Razer/AppData/Local/BraveSoftware/**
+
+# Other browsers
+/c/Users/Razer/AppData/Local/Google/Chrome/**
+/c/Users/Razer/AppData/Local/Microsoft/Edge/**
+/c/Users/Razer/AppData/Roaming/Mozilla/Firefox/**
+/c/Users/Razer/AppData/Roaming/Opera Software/**
+
+# Windows credentials & certificates
+/c/Users/Razer/AppData/Roaming/Microsoft/Credentials/**
+/c/Users/Razer/AppData/Local/Microsoft/Credentials/**
+/c/Users/Razer/AppData/Roaming/Microsoft/Protect/**
+/c/Users/Razer/AppData/Roaming/Microsoft/SystemCertificates/**
+
+# SSH & GPG keys
+/c/Users/Razer/.ssh/**
+/c/Users/Razer/.gnupg/**
+
+# Developer credential files
+/c/Users/Razer/.aws/**
+/c/Users/Razer/.npmrc
+/c/Users/Razer/.gitconfig
+/c/Users/Razer/.git-credentials
+
+# Sensitive file patterns (anywhere in the project)
+*.env
+*.env.local
+*.env.production
+*.pem
+*.key
+*.p12
+*.pfx
+*password*
+*secret*
+*credentials*
+*token*
