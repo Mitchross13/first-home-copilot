@@ -3,3 +3,5 @@ dist
 .locks/*.lock
 .env
 .env.local
+
+.vercel
