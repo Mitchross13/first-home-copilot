@@ -8,7 +8,9 @@
       "Bash(cat /c/Projects/first-home-copilot/.locks/*.lock)",
       "Bash(git init:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(git -C /c/Projects/first-home-copilot config user.email \"dev@firsthomecopilot.app\")",
+      "Bash(git -C /c/Projects/first-home-copilot config user.name \"First Home Co-Pilot\")"
     ]
   }
 }

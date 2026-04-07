@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import JourneyTracker from "./components/journey/JourneyTracker.jsx";
 
 const STATES = {
   QLD: {
@@ -183,6 +184,7 @@ const StepIndicator = ({ current, total, labels }) => (
 );
 
 export default function App() {
+  const [tab, setTab] = useState("calculator");
   const [step, setStep] = useState(0);
   const [state, setState] = useState("QLD");
   const [price, setPrice] = useState(650000);
@@ -225,16 +227,39 @@ export default function App() {
 
   return (
     <div style={{ fontFamily: "'Instrument Sans', 'Segoe UI', sans-serif", maxWidth: 540, margin: "0 auto", padding: "24px 16px" }}>
-      <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
-
-      <div style={{ marginBottom: 8 }}>
+<div style={{ marginBottom: 8 }}>
         <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: 2, color: "#0f6e56", textTransform: "uppercase" }}>Prototype</span>
       </div>
       <h1 style={{ fontSize: 26, fontWeight: 700, margin: "0 0 4px", color: "#1a1a1a", letterSpacing: -0.5 }}>First Home Co-Pilot</h1>
-      <p style={{ fontSize: 14, color: "#888", margin: "0 0 28px", lineHeight: 1.5 }}>
-        See the real cost of buying your first home. No surprises.
+      <p style={{ fontSize: 14, color: "#888", margin: "0 0 20px", lineHeight: 1.5 }}>
+        Your guide to buying your first home. No surprises.
       </p>
 
+      {/* Tab navigation */}
+      <div style={{ display: "flex", gap: 4, marginBottom: 24, background: "#f0efe9", borderRadius: 12, padding: 4 }}>
+        {[
+          { id: "calculator", label: "💰 Calculator" },
+          { id: "journey", label: "🗺️ Journey" },
+        ].map(t => (
+          <button
+            key={t.id}
+            onClick={() => setTab(t.id)}
+            style={{
+              flex: 1, padding: "10px", fontSize: 14, fontWeight: 600, border: "none",
+              borderRadius: 9, cursor: "pointer", transition: "all 0.2s",
+              background: tab === t.id ? "#fff" : "transparent",
+              color: tab === t.id ? "#1a1a1a" : "#888",
+              boxShadow: tab === t.id ? "0 1px 4px rgba(0,0,0,0.08)" : "none",
+            }}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      {tab === "journey" && <JourneyTracker userState={state} />}
+
+      {tab === "calculator" && <>
       <StepIndicator current={step} total={3} labels={["Your situation", "Property details", "Your costs"]} />
 
       {step === 0 && (
@@ -401,6 +426,7 @@ export default function App() {
           </p>
         </div>
       )}
+      </>}
     </div>
   );
 }
