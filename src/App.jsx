@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import JourneyTracker from "./components/journey/JourneyTracker.jsx";
+import WelcomeScreen from "./components/welcome/WelcomeScreen.jsx";
 
 const STATES = {
   QLD: {
@@ -184,9 +185,17 @@ const StepIndicator = ({ current, total, labels }) => (
 );
 
 export default function App() {
+  const [welcomed, setWelcomed] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("fhc_welcomed")) || false; } catch { return false; }
+  });
+  const [userName, setUserName] = useState(() => {
+    try { return localStorage.getItem("fhc_name") || ""; } catch { return ""; }
+  });
   const [tab, setTab] = useState("calculator");
   const [step, setStep] = useState(0);
-  const [state, setState] = useState("QLD");
+  const [state, setState] = useState(() => {
+    try { return localStorage.getItem("fhc_state") || "QLD"; } catch { return "QLD"; }
+  });
   const [price, setPrice] = useState(650000);
   const [deposit, setDeposit] = useState(65000);
   const [isNew, setIsNew] = useState(false);
@@ -219,20 +228,49 @@ export default function App() {
     return { rawStamp, stampDuty, stampSaved, concession, lmi, fhogEligible, fhogAmount, fivePercentEligible, lmiSavedByScheme, helpToBuyEligible, conveyancing, inspections, insurance, movingCosts, transferFee, totalUpfront, totalSavings, netUpfront };
   }, [state, price, deposit, isNew, income, hasOwned]);
 
+  function handleWelcomeComplete({ name, state: chosenState }) {
+    setUserName(name);
+    setState(chosenState);
+    setWelcomed(true);
+    localStorage.setItem("fhc_name", name);
+    localStorage.setItem("fhc_state", chosenState);
+    localStorage.setItem("fhc_welcomed", "true");
+  }
+
+  const firstName = userName ? userName.split(" ")[0] : null;
+
   const inputStyle = {
     width: "100%", padding: "10px 14px", fontSize: 16, border: "1.5px solid #e0dfd9",
     borderRadius: 10, background: "#fafaf7", outline: "none", fontFamily: "'DM Mono', monospace",
     transition: "border-color 0.2s",
   };
 
+  if (!welcomed) {
+    return (
+      <div style={{ fontFamily: "'Instrument Sans', 'Segoe UI', sans-serif", maxWidth: 540, margin: "0 auto", padding: "40px 20px 32px" }}>
+        <WelcomeScreen onComplete={handleWelcomeComplete} />
+      </div>
+    );
+  }
+
   return (
     <div style={{ fontFamily: "'Instrument Sans', 'Segoe UI', sans-serif", maxWidth: 540, margin: "0 auto", padding: "24px 16px" }}>
-<div style={{ marginBottom: 8 }}>
-        <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: 2, color: "#0f6e56", textTransform: "uppercase" }}>Prototype</span>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+        <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: 2, color: "#0f6e56", textTransform: "uppercase" }}>✈️ Co-Pilot</span>
+        {firstName && (
+          <button
+            onClick={() => { localStorage.removeItem("fhc_welcomed"); setWelcomed(false); }}
+            style={{ fontSize: 11, color: "#ccc", background: "none", border: "none", cursor: "pointer" }}
+          >
+            Not {firstName}?
+          </button>
+        )}
       </div>
-      <h1 style={{ fontSize: 26, fontWeight: 700, margin: "0 0 4px", color: "#1a1a1a", letterSpacing: -0.5 }}>First Home Co-Pilot</h1>
+      <h1 style={{ fontSize: 26, fontWeight: 700, margin: "0 0 4px", color: "#1a1a1a", letterSpacing: -0.5 }}>
+        {firstName ? `Hey ${firstName}. 👋` : "First Home Co-Pilot"}
+      </h1>
       <p style={{ fontSize: 14, color: "#888", margin: "0 0 20px", lineHeight: 1.5 }}>
-        Your guide to buying your first home. No surprises.
+        Your roadmap to buying your first home.
       </p>
 
       {/* Tab navigation */}
@@ -257,7 +295,7 @@ export default function App() {
         ))}
       </div>
 
-      {tab === "journey" && <JourneyTracker userState={state} />}
+      {tab === "journey" && <JourneyTracker userState={state} userName={userName} />}
 
       {tab === "calculator" && <>
       <StepIndicator current={step} total={3} labels={["Your situation", "Property details", "Your costs"]} />

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { STAGES } from "../../data/journey.js";
+import StageCelebration from "./StageCelebration.jsx";
 
 const STORAGE_KEY = "fhc_journey";
 
@@ -94,10 +95,12 @@ function Warning({ text }) {
 }
 
 // ─── Main component ────────────────────────────────────────────────────────────
-export default function JourneyTracker({ userState }) {
+export default function JourneyTracker({ userState, userName }) {
   const [currentStage, setCurrentStage] = useState(0);
   const [checked, setChecked] = useState({});
   const [showEducation, setShowEducation] = useState(false);
+  const [celebrating, setCelebrating] = useState(false);
+  const firstName = userName ? userName.split(" ")[0] : null;
 
   // Load persisted progress on mount
   useEffect(() => {
@@ -126,21 +129,44 @@ export default function JourneyTracker({ userState }) {
   function toggleTask(id) {
     setChecked(prev => {
       const next = { ...prev, [id]: !prev[id] };
+      // Check if this completes the stage
+      const nowDone = stage.tasks.every(t => (t.id === id ? !prev[id] : next[t.id]));
+      if (nowDone && !prev[id]) {
+        setTimeout(() => setCelebrating(true), 400);
+      }
       return next;
     });
   }
 
+  function handleNextStage() {
+    setCelebrating(false);
+    setShowEducation(false);
+    setCurrentStage(i => i + 1);
+  }
+
   const stateNote = stage.stateNotes?.[userState];
+
+  if (celebrating) {
+    return (
+      <StageCelebration
+        stageId={stage.id}
+        hasNext={currentStage < STAGES.length - 1}
+        onNext={handleNextStage}
+      />
+    );
+  }
 
   return (
     <div style={{ fontFamily: "'Instrument Sans', 'Segoe UI', sans-serif" }}>
       {/* Header */}
       <div style={{ marginBottom: 20 }}>
         <h2 style={{ fontSize: 20, fontWeight: 700, margin: "0 0 4px", color: "#1a1a1a" }}>
-          Your Buying Journey
+          {firstName ? `${firstName}'s Buying Journey` : "Your Buying Journey"}
         </h2>
         <p style={{ fontSize: 13, color: "#888", margin: 0 }}>
-          {completedStages.length} of {STAGES.length} stages complete
+          {completedStages.length === 0
+            ? "Let's get you started. Tap a task to mark it done."
+            : `${completedStages.length} of ${STAGES.length} stages complete — you're making progress.`}
         </p>
       </div>
 
@@ -205,19 +231,6 @@ export default function JourneyTracker({ userState }) {
           ))}
         </div>
 
-        {/* Next stage button */}
-        {allDone && currentStage < STAGES.length - 1 && (
-          <button
-            onClick={() => setCurrentStage(i => i + 1)}
-            style={{
-              marginTop: 16, width: "100%", padding: "13px", fontSize: 14, fontWeight: 600,
-              border: "none", borderRadius: 10, background: "#0f6e56", color: "#fff",
-              cursor: "pointer",
-            }}
-          >
-            Move to {STAGES[currentStage + 1].label} →
-          </button>
-        )}
       </div>
 
       {/* Warnings */}
