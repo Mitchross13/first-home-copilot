@@ -10,7 +10,10 @@
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(git -C /c/Projects/first-home-copilot config user.email \"dev@firsthomecopilot.app\")",
-      "Bash(git -C /c/Projects/first-home-copilot config user.name \"First Home Co-Pilot\")"
+      "Bash(git -C /c/Projects/first-home-copilot config user.name \"First Home Co-Pilot\")",
+      "Skill(schedule)",
+      "Bash(git -C /c/Projects/first-home-copilot add -A)",
+      "Bash(git -C /c/Projects/first-home-copilot commit -m \"Add Document Vault, Recommendations engine, industry schemes, broker transparency section\")"
     ]
   }
 }

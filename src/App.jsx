@@ -1,6 +1,8 @@
 import { useState, useMemo } from "react";
 import JourneyTracker from "./components/journey/JourneyTracker.jsx";
 import WelcomeScreen from "./components/welcome/WelcomeScreen.jsx";
+import DocumentVault from "./components/vault/DocumentVault.jsx";
+import Recommendations from "./components/recommendations/Recommendations.jsx";
 
 const STATES = {
   QLD: {
@@ -274,28 +276,34 @@ export default function App() {
       </p>
 
       {/* Tab navigation */}
-      <div style={{ display: "flex", gap: 4, marginBottom: 24, background: "#f0efe9", borderRadius: 12, padding: 4 }}>
+      <div style={{ display: "flex", gap: 3, marginBottom: 24, background: "#f0efe9", borderRadius: 12, padding: 4 }}>
         {[
-          { id: "calculator", label: "💰 Calculator" },
-          { id: "journey", label: "🗺️ Journey" },
+          { id: "calculator",      label: "💰", title: "Costs" },
+          { id: "journey",         label: "🗺️", title: "Journey" },
+          { id: "vault",           label: "📁", title: "Finances" },
+          { id: "recommendations", label: "⭐", title: "Picks" },
         ].map(t => (
           <button
             key={t.id}
             onClick={() => setTab(t.id)}
             style={{
-              flex: 1, padding: "10px", fontSize: 14, fontWeight: 600, border: "none",
+              flex: 1, padding: "9px 4px", fontSize: 11, fontWeight: 600, border: "none",
               borderRadius: 9, cursor: "pointer", transition: "all 0.2s",
               background: tab === t.id ? "#fff" : "transparent",
               color: tab === t.id ? "#1a1a1a" : "#888",
               boxShadow: tab === t.id ? "0 1px 4px rgba(0,0,0,0.08)" : "none",
+              display: "flex", flexDirection: "column", alignItems: "center", gap: 2,
             }}
           >
-            {t.label}
+            <span style={{ fontSize: 18 }}>{t.label}</span>
+            <span>{t.title}</span>
           </button>
         ))}
       </div>
 
       {tab === "journey" && <JourneyTracker userState={state} userName={userName} />}
+      {tab === "vault" && <DocumentVault userName={userName} />}
+      {tab === "recommendations" && <Recommendations userName={userName} />}
 
       {tab === "calculator" && <>
       <StepIndicator current={step} total={3} labels={["Your situation", "Property details", "Your costs"]} />
