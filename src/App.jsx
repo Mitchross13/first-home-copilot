@@ -3,6 +3,7 @@ import JourneyTracker from "./components/journey/JourneyTracker.jsx";
 import WelcomeScreen from "./components/welcome/WelcomeScreen.jsx";
 import DocumentVault from "./components/vault/DocumentVault.jsx";
 import Recommendations from "./components/recommendations/Recommendations.jsx";
+import DevEditor from "./components/devtools/DevEditor.jsx";
 
 const STATES = {
   QLD: {
@@ -473,6 +474,7 @@ export default function App() {
         </div>
       )}
       </>}
+      <DevEditor />
     </div>
   );
 }

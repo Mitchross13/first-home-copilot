@@ -13,7 +13,15 @@
       "Bash(git -C /c/Projects/first-home-copilot config user.name \"First Home Co-Pilot\")",
       "Skill(schedule)",
       "Bash(git -C /c/Projects/first-home-copilot add -A)",
-      "Bash(git -C /c/Projects/first-home-copilot commit -m \"Add Document Vault, Recommendations engine, industry schemes, broker transparency section\")"
+      "Bash(git -C /c/Projects/first-home-copilot commit -m \"Add Document Vault, Recommendations engine, industry schemes, broker transparency section\")",
+      "Bash(export PATH=\"/c/Users/Razer/AppData/Roaming/npm:/c/Program Files/nodejs:$PATH\")",
+      "Bash(gh --version)",
+      "Bash(gh auth:*)",
+      "Bash(winget install:*)",
+      "Bash(node -e ':*)",
+      "Bash(export PATH=\"/c/Program Files/GitHub CLI:/c/Program Files/nodejs:$PATH\")",
+      "Bash(gh secret:*)",
+      "Bash(git push:*)"
     ]
   }
 }
